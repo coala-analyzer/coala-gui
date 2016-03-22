@@ -1,7 +1,7 @@
 import os
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gio, GObject
+from gi.repository import Gtk, Gio, GObject, Gdk
 
 from source.Searchbar.Searchbar import Searchbar
 from source.support.EditableLabel import EditableLabel
@@ -34,8 +34,15 @@ class coalaApp(Gtk.Application):
                                       app)
 
     def _setup_workspace(self, listbox, listboxrow, app):
-        self.workspace = WorkspaceWindow(self,
-                                         listboxrow.get_child().get_name())
+        # Check if dir exists
+        if os.path.isdir(listboxrow.get_child().get_name()):
+            self.workspace = WorkspaceWindow(self,
+                                             listboxrow.get_child().get_name())
+        else:
+            # Warn by changing the background color
+            listboxrow.get_child().override_background_color(Gtk.StateType.NORMAL,
+                                                             Gdk.RGBA.from_color(Gdk.color_parse('red')))
+            return
         self.greeter.hide()
         self.workspace.show()
 
