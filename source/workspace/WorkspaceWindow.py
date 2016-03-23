@@ -52,7 +52,7 @@ class WorkspaceWindow(Gtk.ApplicationWindow):
         if name is not None:
             editable_label.entry.set_text(name)
             self.create_section_view(widget=editable_label,
-                                     row_obejct=section_row)
+                                     row_object=section_row)
             editable_label.connect("edited",
                                    self.update_section_name,
                                    name,
@@ -82,7 +82,7 @@ class WorkspaceWindow(Gtk.ApplicationWindow):
         self.get_application().greeter.show()
         self.destroy()
 
-    def create_section_view(self, widget=None, arg=None, row_obejct=None):
+    def create_section_view(self, widget=None, arg=None, row_object=None):
         section_view = SectionView(self.sections_dict, self.src)
         section_view.set_visible(True)
         section_view.set_name(widget.get_name())
@@ -98,7 +98,7 @@ class WorkspaceWindow(Gtk.ApplicationWindow):
             conf_writer = ConfWriter(self.src+'/.coafile')
             conf_writer.write_sections(self.sections_dict)
             conf_writer.close()
-        self.section_stack_map[row_obejct] = section_view
+        self.section_stack_map[row_object] = section_view
 
     def on_row_selection_changed(self, listbox, row):
         self.sections.set_visible_child(self.section_stack_map[row])
@@ -122,7 +122,7 @@ class WorkspaceWindow(Gtk.ApplicationWindow):
         self.sections_dict = update_ordered_dict_key(self.sections_dict,
                                                      old_name,
                                                      widget.get_name())
-        widget.connect("edited", self.update_section_name, widget.get_name())
+        widget.connect("edited", self.update_section_name, widget.get_name(), section_view)
         conf_writer = ConfWriter(self.src+'/.coafile')
         conf_writer.write_sections(self.sections_dict)
         conf_writer.close()
