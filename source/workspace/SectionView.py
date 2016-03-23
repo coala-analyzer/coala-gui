@@ -41,7 +41,7 @@ class SectionView(Gtk.ListBox):
         if setting is not None:
             key_label.label.set_label(setting.key)
             value_entry.set_text(setting.value)
-            key_label.connect("edited", self.update_key, setting)
+            key_label.connect("edited", self.update_key, setting, delete_button)
             value_entry.connect("changed", self.update_value, setting)
             delete_button.set_sensitive(True)
             delete_button.set_name(setting.key)
